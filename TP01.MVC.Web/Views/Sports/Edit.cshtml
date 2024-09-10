@@ -1,0 +1,29 @@
+﻿@model SportViewModel
+@{
+    ViewData["Title"] = "Editar un deporte";
+}
+<form method="post" asp-controller="Sports" asp-action="Edit">
+    <input type="hidden" asp-for="SportId" />
+    <h3>Editar un deporte:</h3>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <div class="mb-3">
+            <label asp-for="SportName" class="form-control"></label>
+            <input asp-for="SportName" type="text" class="form-control" />
+            <span asp-validation-for="SportName" class="text-danger"></span>
+        </div>
+        <button class="btn btn-outline-success">
+            Guardar
+        </button>
+        <a asp-controller="Sports" asp-action="Index" class="btn btn-outline-secondary">
+            Volver a la lista
+        </a>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

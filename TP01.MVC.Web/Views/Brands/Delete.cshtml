@@ -1,0 +1,22 @@
+﻿@model Brand
+@{
+    ViewData["Title"] = "Eliminar una marca";
+}
+<form method="post" asp-controller="Brands" asp-action="Delete">
+    <input type="hidden" asp-for="BrandId" />
+    <h3>Eliminar una marca:</h3>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <div class="mb-3">
+            <label asp-for="BrandName" class="form-control">Marca</label>
+            <input asp-for="BrandName" disabled type="text" class="form-control" />
+        </div>
+        <button class="btn btn-outline-danger">
+            Eliminar
+        </button>
+        <a asp-controller="Brands" asp-action="Index" class="btn btn-outline-secondary">
+            Volver a la lista
+        </a>
+    </div>
+</form>
