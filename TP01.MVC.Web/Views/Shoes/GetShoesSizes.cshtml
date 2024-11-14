@@ -1,0 +1,109 @@
+﻿@* @model List<SizeStockViewModel> *@
+
+@model IPagedList<SizeStockViewModel>
+@using X.PagedList;
+@using X.Web.PagedList
+
+@{
+    var shoeId = Model.FirstOrDefault()?.ShoeId;
+}
+
+@if (!Model.Any())
+{
+    <h5 class="mt-5">El talle específico que busca (@ViewBag.Filtro) no fue encontrado, vuelva a intentarlo y verifique </h5>
+    <div class="mb-5 mt-3">
+    <a asp-controller="Shoes" asp-action="GetShoesSizes" asp-route-id="@ViewBag.IdError" class="btn btn-primary">Ver todos los talles</a>
+    <a asp-controller="Shoes" asp-action="Details" asp-route-id="@ViewBag.IdError" class="btn btn-secondary">Volver a los detalles</a>
+    </div>
+}
+else
+{
+    <h5 class="mb-4 mt-4">
+        Talles y stock | Zapatilla <b>COD: @shoeId.ToString().PadLeft(7, '0')</b>
+    </h5>
+    <div class="d-flex mb-2 ">
+        <form asp-controller="Shoes" asp-action="GetShoeSizes" style="margin-right:100px">
+            <div class="d-flex input-group">
+                <input id="filtro" name="filtro" type="number" class="form-control" placeholder="Buscar talle" style="width: 130px; margin-right: 2px" value="@ViewBag.Filtro" />
+                <button type="submit" asp-route-id="@shoeId" asp-route-page="@(ViewBag.CurrentPage ?? 1)" class="btn btn-primary" style="width: 60px; padding:6px;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+        <div>
+            <a asp-controller="Shoes" asp-action="GetShoesSizes" asp-route-id="@shoeId" class="btn btn-primary">Ver todos</a>
+            <a asp-controller="Shoes" asp-action="Details" asp-route-id="@shoeId" class="btn btn-secondary">Volver a los detalles</a>
+
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover w-50">
+        <thead>
+            <tr>
+                <th>Talle</th>
+                <th>Stock Disponible</th>
+                <th>Controles para actualizar stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.SizeNumber</td>
+                    <td>
+                        @item.QuantityInStock                        
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-outline-primary bg-gradient py-2" 
+                                asp-action="Plus"
+                                asp-route-sizeNumber="@item.SizeNumber.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)"
+                                asp-route-shoeId="@shoeId"
+                                asp-route-page="@(ViewBag.CurrentPage ?? 1)"
+                                asp-route-filter="@(ViewBag.Filtro)">
+                                <i class="bi bi-plus-square"></i>
+                            </a>
+
+                            <a class="btn btn-outline-primary bg-gradient py-2"
+                               asp-action="Minus"
+                               asp-route-sizeNumber="@item.SizeNumber.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)"
+                               asp-route-shoeId="@shoeId"
+                               asp-route-page="@(ViewBag.CurrentPage ?? 1)"
+                               asp-route-filter="@(ViewBag.Filtro)">
+                                <i class="bi bi-dash-square"></i>
+                            </a>
+
+                            <form asp-controller="Shoes" asp-action="UpdateStock" method="post" class="input-group">
+                                <input type="number" id="stock" name="stock" class="form-control ms-5" style="width: 90px;" />
+                                <input type="hidden" name="sizeNumber" value="@item.SizeNumber" />
+                                <input type="hidden" name="shoeId" value="@shoeId" />
+                                <input type="hidden" name="page" value="@(ViewBag.CurrentPage ?? 1)" />
+                                <input type="hidden" name="filter" value="@(ViewBag.Filtro)" />
+                                <button type="submit" class="btn btn-outline-primary">Actualizar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+    </table>
+
+    <div class="d-flex">
+        @Html.PagedListPager(Model, page => Url.Action("GetShoesSizes", new { id = shoeId, page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    DisplayLinkToIndividualPages = true,
+    DisplayPageCountAndCurrentLocation = false,
+    MaximumPageNumbersToDisplay = 10
+})
+    </div>
+
+}
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+

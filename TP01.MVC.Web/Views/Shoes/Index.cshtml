@@ -1,0 +1,144 @@
+﻿@model ShoeFilterViewModel
+@using X.PagedList;
+@using X.Web.PagedList
+
+@{
+    ViewData["Title"] = "Shoes List";
+}
+
+<div class="row mb-2">
+    <div class="col-8">
+        <h5>Listado de Zapatillas</h5>
+    </div>
+</div>
+<form method="get" asp-controller="Shoes" asp-action="Index">
+    <div class="row mb-3">
+        <div class="col-2">
+            <a asp-controller="Shoes" asp-action="Create" class="btn btn-outline-primary" style="width:170px">
+                Nuevo
+            </a>
+        </div>
+
+        <div class="col-3">
+            <div class="input-group">
+                <input type="text" name="search" id="search" class="form-control" placeholder="Buscar" value="@ViewBag.Search"/>
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-7">
+            <div class="input-group">
+                <button type="submit" class="btn btn-dark" disabled style="width:100px">Ordenar</button>
+                <button type="submit" class="btn btn-outline-secondary" style="width:130px" name="orden" id="orden" value="AZ">A - Z</button>
+                <button type="submit" class="btn btn-outline-secondary" style="width:130px" name="orden" id="orden" value="ZA">Z - A</button>
+                <button type="submit" class="btn btn-outline-secondary" style="width:130px" name="orden" id="orden" value="MenorPrecio">Menor precio</button>
+                <button type="submit" class="btn btn-outline-secondary" style="width:130px" name="orden" id="orden" value="MayorPrecio">Mayor precio</button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="input-group">
+                <button class="btn btn-dark" disabled style="width:100px">Filtrar</button>
+                <select class="form-select" id="FilterBrandId" name="FilterBrandId" onchange="this.form.submit()">
+                    <option disabled selected value="0">Marca...</option>
+                    @foreach (var item in Model.Brands!)
+                    {
+                        <option selected="@(ViewBag.FilterBrandId==int.Parse(item.Value)?"selected":null)" value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select class="form-select" id="FilterSportId" name="FilterSportId" onchange="this.form.submit()">
+                    <option disabled selected value="0">Deporte...</option>
+                    @foreach (var item in Model.Sports!)
+                    {
+                        <option selected="@(ViewBag.FilterSportId==int.Parse(item.Value)?"selected":null)" value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select class="form-select" id="FilterGenreId" name="FilterGenreId" onchange="this.form.submit()">
+                    <option disabled selected value="0">Genero...</option>
+                    @foreach (var item in Model.Genres!)
+                    {
+                        <option selected="@(ViewBag.FilterGenreId==int.Parse(item.Value)?"selected":null)" value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <select class="form-select" id="FilterColourId" name="FilterColourId" onchange="this.form.submit()">
+                    <option disabled selected value="0">Color...</option>
+                    @foreach (var item in Model.Colours!)
+                    {
+                        <option selected="@(ViewBag.FilterColourId==int.Parse(item.Value)?"selected":null)" value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-success" id="verTodo" name="verTodo" value="true">
+                    <i class="bi bi-list-columns-reverse me-2"></i>
+                    Ver todo
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<Table class="table table-bordered table-hover w-100">
+    <thead>
+        <tr>
+            <th class="w-25">
+                Modelo
+            </th>
+            <th class="w-25">
+                Marca
+            </th>
+            <th style="width: auto;">
+                Deporte
+            </th>
+            <th style="width: auto;">
+                Precio
+            </th>
+            <th style="width: auto;">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Shoes.Any())
+        {
+            @foreach (var item in Model.Shoes)
+            {
+                <tr>
+                    <td>@item.Model</td>
+                    <td>@item.BrandName</td>
+                    <td>@item.SportName</td>
+                    <td>$@item.Price</td>
+                    <td>
+                        <a asp-controller="Shoes" asp-action="Details" asp-route-id="@item.ShoeId" class="btn btn-outline-dark me-2">
+                            Detalles
+                        </a>
+                        <a asp-controller="Shoes" asp-action="Edit" asp-route-id="@item.ShoeId" class="btn btn-outline-warning me-2">
+                            Editar
+                        </a>
+                        <a asp-controller="Shoes" asp-action="Delete" asp-route-id="@item.ShoeId" class="btn btn-outline-danger me-2">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>No hay zapatillas agregadas</td>
+            </tr>
+        }
+    </tbody>
+</Table>
+<div class="d-flex">
+    @Html.PagedListPager(Model.Shoes, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    DisplayLinkToIndividualPages = true,
+    DisplayPageCountAndCurrentLocation = false,
+    MaximumPageNumbersToDisplay = 10
+})
+</div>
+
+

@@ -8,17 +8,10 @@ using TP01EF2024.Entidades.Enums;
 
 namespace TP01EF2024.Datos.Interfaces
 {
-    public interface IGenresRepository
+    public interface IGenresRepository:IGenericRepository<Genre>
     {
-        void Agregar(Genre genre);
         void Editar(Genre genre);
-        void Eliminar(Genre genre);
-        bool EstaRelacionado(Genre genre);
+        bool EstaRelacionado(int id);
         bool Existe(Genre genre);
-        Genre? GetGenrePorId(int id);
-        List<Genre> GetGenres();
-        int GetCantidad();
-        List<Shoe>? GetShoes(Genre genre);
-        List<Genre> GetGenresPaginadosOrdenados(int page, int pageSize, Orden? orden = null, string? textFil = null);
     }
 }

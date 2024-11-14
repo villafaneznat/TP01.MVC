@@ -10,28 +10,18 @@ using TP01EF2024.Entidades.Enums;
 
 namespace TP01EF2024.Datos.Repositorios
 {
-    public class SizesRepository : ISizesRepository
+    public class SizesRepository : GenericRepository<Size>, ISizesRepository
     {
         private readonly TP01DbContext _context;
 
-        public SizesRepository(TP01DbContext context)
+        public SizesRepository(TP01DbContext context) : base(context)
         {
             _context = context;
-        }
-
-        public void Agregar(Size size)
-        {
-            _context.Sizes.Add(size);
         }
 
         public void Editar(Size size)
         {
             _context.Sizes.Update(size);
-        }
-
-        public void Eliminar(Size size)
-        {
-            _context.Sizes.Remove(size);
         }
 
         public bool EstaRelacionado(Size size)
@@ -53,56 +43,9 @@ namespace TP01EF2024.Datos.Repositorios
             return _context.Sizes.Count();
         }
 
-        public Size? GetSizePorId(int id)
-        {
-            return _context.Sizes.SingleOrDefault(s => s.SizeId == id);
-        }
-
-        public List<Size> GetSizes()
-        {
-            return _context.Sizes.AsNoTracking().ToList();
-        }
-
-        public List<Size> GetSizesPaginadosOrdenados(int page, int pageSize, Orden? orden = null)
-        {
-            IQueryable<Size> query = _context.Sizes.AsNoTracking();
-
-            //ORDEN
-            if (orden != null)
-            {
-                switch (orden)
-                {
-                    case Orden.AZ:
-                        query = query.OrderBy(s => s.SizeNumber);
-                        break;
-                    case Orden.ZA:
-                        query = query.OrderByDescending(s => s.SizeNumber);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            //PAGINADO
-            List<Size> listaPaginada = query.AsNoTracking()
-                .Skip(page * pageSize) //Saltea estos registros
-                .Take(pageSize) //Muestra estos
-                .ToList();
-
-            return listaPaginada;
-        }
-
         public List<Shoe> GetShoesForSize(int sizeId)
         {
-            //return _context.ShoesSizes
-            //    .Include(ss => ss.Shoe)
-            //    .Where(ss => ss.SizeId == sizeId)
-            //    .Select(ss => ss.Shoe)
-            //    .Include(s => s.Brand)
-            //    .Include(s => s.Genre)
-            //    .Include(s => s.Sport)
-            //    .Include(s => s.Colour)
-            //    .ToList();
+
             return _context.ShoesSizes
                 .Include(ss => ss.Shoe).ThenInclude(s => s.Brand)
                 .Include(ss => ss.Shoe).ThenInclude(s => s.Genre)

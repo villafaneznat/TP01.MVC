@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TP01EF2024.Datos.Interfaces;
@@ -22,12 +23,12 @@ namespace TP01EF2024.Servicios.Servicios
             _unitOfWork = unitOfWork;
         }
 
-        public void Eliminar(Genre genre)
+        public void Eliminar(Genre brand)
         {
             try
             {
                 _unitOfWork.BeginTransaction();
-                _repository.Eliminar(genre);
+                _repository.Eliminar(brand);
                 _unitOfWork.Commit();
             }
             catch (Exception)
@@ -37,11 +38,11 @@ namespace TP01EF2024.Servicios.Servicios
             }
         }
 
-        public bool EstaRelacionado(Genre genre)
+        public bool EstaRelacionado(int id)
         {
             try
             {
-                return _repository.EstaRelacionado(genre);
+                return _repository.EstaRelacionado(id);
             }
             catch (Exception)
             {
@@ -50,11 +51,11 @@ namespace TP01EF2024.Servicios.Servicios
             }
         }
 
-        public bool Existe(Genre genre)
+        public bool Existe(Genre brand)
         {
             try
             {
-                return _repository.Existe(genre);
+                return _repository.Existe(brand);
             }
             catch (Exception)
             {
@@ -63,49 +64,29 @@ namespace TP01EF2024.Servicios.Servicios
             }
         }
 
-        public Genre? GetGenrePorId(int id)
+        public Genre? Get(Expression<Func<Genre, bool>>? filter = null, string? propertiesNames = null, bool tracked = true)
         {
-            try
-            {
-                return _repository.GetGenrePorId(id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return _repository!.Get(filter, propertiesNames, tracked);
         }
 
-        public List<Genre> GetGenres()
+        public IEnumerable<Genre>? GetAll(Expression<Func<Genre, bool>>? filter = null, Func<IQueryable<Genre>, IOrderedQueryable<Genre>>? orderBy = null, string? propertiesNames = null)
         {
-            try
-            {
-                return _repository.GetGenres();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            return _repository!.GetAll(filter, orderBy, propertiesNames);
         }
 
-        public int GetCantidad()
-        {
-            return _repository.GetCantidad();
-        }
-
-        public void Guardar(Genre genre)
+        public void Guardar(Genre brand)
         {
             try
             {
                 _unitOfWork.BeginTransaction();
 
-                if (genre.GenreId == 0)
+                if (brand.GenreId == 0)
                 {
-                    _repository.Agregar(genre);
+                    _repository.Agregar(brand);
                 }
                 else
                 {
-                    _repository.Editar(genre);
+                    _repository.Editar(brand);
                 }
 
                 _unitOfWork.Commit();
@@ -116,17 +97,5 @@ namespace TP01EF2024.Servicios.Servicios
                 throw;
             }
         }
-
-        public List<Shoe>? GetShoes(Genre genre)
-        {
-            return _repository.GetShoes(genre);
-        }
-
-        public List<Genre> GetGenresPaginadosOrdenados(int page, int pageSize, Orden? orden = null, string? textFil = null)
-        {
-            return _repository.GetGenresPaginadosOrdenados(page, pageSize, orden, textFil);
-        }
-
-
     }
 }

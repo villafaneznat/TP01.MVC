@@ -10,7 +10,7 @@ namespace TP01EF2024.Entidades
 {
     public class ShoeSize
     {
-        public int ShoeSizeId { get; set; }
+        public int? ShoeSizeId { get; set; }
         public int ShoeId { get; set; }
         public Shoe Shoe { get; set; } = null!;
         public int SizeId { get; set; }

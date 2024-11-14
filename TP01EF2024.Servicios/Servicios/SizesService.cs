@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TP01EF2024.Datos.Interfaces;
@@ -84,45 +85,6 @@ namespace TP01EF2024.Servicios.Servicios
             }
         }
 
-        public Size? GetSizePorId(int id)
-        {
-            try
-            {
-                return _repository.GetSizePorId(id);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public List<Size> GetSizes()
-        {
-            try
-            {
-                return _repository.GetSizes();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public List<Size> GetSizesPaginadosOrdenados(int page, int pageSize, Orden? orden = null)
-        {
-            try
-            {
-                return _repository.GetSizesPaginadosOrdenados(page, pageSize, orden);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         public void Guardar(Size size)
         {
             try
@@ -158,6 +120,16 @@ namespace TP01EF2024.Servicios.Servicios
 
                 throw;
             }
+        }
+
+        public IEnumerable<Size>? GetAll(Expression<Func<Size, bool>>? filter = null, Func<IQueryable<Size>, IOrderedQueryable<Size>>? orderBy = null, string? propertiesNames = null)
+        {
+            return _repository!.GetAll(filter, orderBy, propertiesNames);
+        }
+
+        public Size? Get(Expression<Func<Size, bool>>? filter = null, string? propertiesNames = null, bool tracked = true)
+        {
+            return _repository!.Get(filter, propertiesNames, tracked);
         }
 
     }

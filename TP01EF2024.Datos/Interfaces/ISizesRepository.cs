@@ -8,17 +8,12 @@ using TP01EF2024.Entidades;
 
 namespace TP01EF2024.Datos.Interfaces
 {
-    public interface ISizesRepository
+    public interface ISizesRepository : IGenericRepository<Size>
     {
-        void Agregar(Size size);
         void Editar(Size size);
-        void Eliminar(Size size);
         bool EstaRelacionado(Size size);
         bool Existe(Size size);
-        Size? GetSizePorId(int id);
-        List<Size> GetSizes();
         int GetCantidad();
-        List<Size> GetSizesPaginadosOrdenados(int page, int pageSize, Orden? orden = null);
         List<Shoe>? GetShoesForSize(int sizeId);
     }
 }

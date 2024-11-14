@@ -1,0 +1,76 @@
+﻿@model ShoeEditViewModel
+@{
+    ViewData["Title"] = $"Nueva zapatilla";
+}
+<form method="post" asp-controller="Shoes" asp-action="Create">
+    <input type="hidden" asp-for="ShoeId" />
+    <a asp-controller="Shoes" asp-action="Index" class="btn btn-outline-secondary">
+        Volver a la lista
+    </a>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6 w-50">
+            <div class="mb-3">
+                <label asp-for="BrandId" class="form-control"></label>
+                <select asp-for="BrandId" asp-items="Model.Brands" class="form-control">
+                    <option selected disabled>Seleccione una marca</option>
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SportId" class="form-control"></label>
+                <select asp-for="SportId" asp-items="Model.Sports" class="form-control">
+                    <option selected disabled>Seleccione un deporte</option>
+                </select>
+                <span asp-validation-for="SportId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ColourId" class="form-control"></label>
+                <select asp-for="ColourId" asp-items="Model.Colours" class="form-control">
+                    <option selected disabled>Seleccione un color</option>
+                </select>
+                <span asp-validation-for="ColourId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="GenreId" class="form-control"></label>
+                <select asp-for="GenreId" asp-items="Model.Genres" class="form-control">
+                    <option selected disabled>Seleccione un genero</option>
+                </select>
+                <span asp-validation-for="GenreId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 w-50">
+            <div class="mb-3">
+                <label asp-for="Model" class="form-control"></label>
+                <input asp-for="Model" type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-control"></label>
+                <textarea asp-for="Description" class="form-control" style="height:77px; resize: none;"></textarea>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Price" class="form-control"></label>
+                <input type=number asp-for="Price" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Active" class="form-control">
+                    ¿Esta zapatilla se encuentra activa?
+                <input asp-for="Active" type="checkbox" class="form-check-input ms-2" />
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-outline-success w-50">
+            Guardar
+        </button>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -1,0 +1,70 @@
+﻿@model ShoeViewModel
+@{
+    ViewData["Title"] = $"Eliminar zapatilla";
+}
+<form method="post" asp-controller="Shoes" asp-action="Delete">
+    <input type="hidden" asp-for="ShoeId" />
+    <a asp-controller="Shoes" asp-action="Index" class="btn btn-outline-secondary">
+        Volver a la lista
+    </a>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6 w-50">
+            <div class="mb-3">
+                <label asp-for="BrandName" class="form-control"></label>
+                <input asp-for="BrandName" disabled type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="SportName" class="form-control"></label>
+                <input asp-for="SportName" disabled type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="ColourName" class="form-control"></label>
+                <input asp-for="ColourName" disabled type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="GenreName" class="form-control"></label>
+                <input asp-for="GenreName" disabled type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6 w-50">
+            <div class="mb-3">
+                <label asp-for="Model" class="form-control"></label>
+                <input asp-for="Model" disabled type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-control"></label>
+                <textarea asp-for="Description" disabled class="form-control" style="height:77px; resize: none;"></textarea>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Price" class="form-control"></label>
+                <input type=number asp-for="Price" disabled class="form-control">
+            </div>
+            <div class="mb-3">
+                <label asp-for="Active" class="form-control">
+                    Activo:
+                    @if (Model.Active)
+                    {
+                        <span class="badge bg-success ms-5 w-75">YES</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger w-100">NO </span>
+                    }
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-outline-danger me-2 w-50">
+            Eliminar
+        </button>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
