@@ -1,14 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TP01EF2024.Datos.Interfaces;
+﻿using TP01EF2024.Datos.Interfaces;
 using TP01EF2024.Entidades;
-using TP01EF2024.Entidades.Enums;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TP01EF2024.Datos.Repositorios
 {

@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.IdentityModel.Tokens;
-using System.Drawing.Printing;
-using TP01.MVC.Web.ViewModels.Brand;
 using TP01.MVC.Web.ViewModels.Shoe;
 using TP01EF2024.Entidades;
-using TP01EF2024.Entidades.Enums;
 using TP01EF2024.Servicios.Interfaces;
-using TP01EF2024.Servicios.Servicios;
-using X.PagedList;
 using X.PagedList.Extensions;
 
 namespace TP01.MVC.Web.Controllers
@@ -35,15 +29,6 @@ namespace TP01.MVC.Web.Controllers
             _sizesService = sizesService;
             _mapper = mapper;
         }
-
-        //public IActionResult Index(int? page)
-        //{
-        //    int pageNum = page ?? 1;
-        //    int pageSize = 8;
-        //    var shoes = _services.GetAll(orderBy: o => o.OrderBy(s => s.Model),
-        //            propertiesNames: "Brand,Sport").ToPagedList(pageNum, pageSize);
-        //    return View(shoes);
-        //}
 
         public IActionResult Index(int? page, string? search= null, int? FilterBrandId = null, int? FilterColourId = null, int? FilterGenreId = null, int? FilterSportId = null, bool verTodo = false, string? orden = null)
         {
@@ -122,7 +107,6 @@ namespace TP01.MVC.Web.Controllers
             };
             return View(shoeFilterVM);
         }
-
 
         public IActionResult Details(int? id)
         {

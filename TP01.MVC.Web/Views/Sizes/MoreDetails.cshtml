@@ -1,0 +1,59 @@
+﻿@model ShoeStockViewModel
+@{
+    ViewData["Title"] = $"Detalle de zapatilla";
+}
+<h5 class="mb-4 mt-4">
+    Detalles | Zapatilla <b>COD: @Model.ShoeId.ToString().PadLeft(7, '0') | Talle NUM: @Model.SizeNumber</b>
+</h5>
+
+<form method="post" asp-controller="Shoes" asp-action="Details">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6 w-50">
+            <h5 class="mb-3">Cantidad en stock: <strong>@Model.QuantityInStock</strong></h5>
+            <div class="mb-3">
+                <label asp-for="BrandName" class="form-control"></label>
+                <input asp-for="BrandName" disabled type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="SportName" class="form-control"></label>
+                <input asp-for="SportName" disabled type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="ColourName" class="form-control"></label>
+                <input asp-for="ColourName" disabled type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="GenreName" class="form-control"></label>
+                <input asp-for="GenreName" disabled type="text" class="form-control" />
+            </div>
+
+        </div>
+        <div class="col-md-6 w-50">
+
+            <div class="mb-3" style="margin-top: 40px">
+                <label asp-for="Model" class="form-control"></label>
+                <input asp-for="Model" disabled type="text" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-control"></label>
+                <textarea asp-for="Description" disabled class="form-control" style="height:77px; resize: none;"></textarea>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Price" class="form-control"></label>
+                <input type="text" asp-for="Price" disabled class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <a asp-controller="Sizes" asp-action="Details" asp-route-id="@Model.SizeId" class="btn btn-outline-secondary w-50">
+            Volver
+        </a>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

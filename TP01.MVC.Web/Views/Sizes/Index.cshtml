@@ -1,0 +1,58 @@
+﻿@model IPagedList<Size>
+@using X.PagedList;
+@using X.Web.PagedList
+
+@{
+    ViewData["Title"] = "Sizes List";
+}
+
+<div class="row mb-2">
+    <h3>Listado de Talles</h3>
+</div>
+<Table class="table table-bordered table-hover w-50">
+    <thead>
+        <tr>
+            <th class="w-50">
+                Talle
+            </th>
+            <th class="">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.SizeNumber</td>
+                    <td class="text-lg-start">
+                        <a asp-controller="Sizes" asp-action="Details" asp-route-id="@item.SizeId" asp-route-page="@(ViewBag.CurrentPage ?? 1)" class="btn btn-outline-dark ms-2">
+                            Detalles
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>No hay talles agregados</td>
+            </tr>
+        }
+    </tbody>
+</Table>
+<div class="d-flex">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    DisplayLinkToIndividualPages = true,
+    DisplayPageCountAndCurrentLocation = false,
+    MaximumPageNumbersToDisplay = 10
+})
+</div>
+
+

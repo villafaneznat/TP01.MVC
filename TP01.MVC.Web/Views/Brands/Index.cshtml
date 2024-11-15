@@ -19,7 +19,7 @@
 <Table class="table table-bordered table-hover w-75">
     <thead>
         <tr>
-            <th class="w-75">
+            <th class="w-50">
                 Marca
             </th>
             <th class="">    
@@ -34,12 +34,15 @@
             {
                 <tr>
                     <td>@item.BrandName</td>
-                    <td class="text-lg-center">
-                        <a asp-controller="Brands" asp-action="Edit" asp-route-id="@item.BrandId" class="btn btn-outline-warning me-2">
+                    <td class="text-lg-start">
+                        <a asp-controller="Brands" asp-action="Edit" asp-route-id="@item.BrandId" class="btn btn-outline-warning  ms-2">
                             Editar
                         </a>
                         <a asp-controller="Brands" asp-action="Delete" asp-route-id="@item.BrandId" class="btn btn-outline-danger ms-2">
                             Eliminar
+                        </a>
+                        <a asp-controller="Brands" asp-action="Details" asp-route-id="@item.BrandId" asp-route-page="@(ViewBag.CurrentPage ?? 1)" class="btn btn-outline-dark ms-2">
+                            Detalles
                         </a>
                     </td>
                 </tr>

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using TP01EF2024.Entidades;
-using TP01EF2024.Entidades.Enums;
 
 namespace TP01EF2024.Servicios.Interfaces
 {

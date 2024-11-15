@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Drawing2D;
 using TP01.MVC.Web.ViewModels.Colour;
+using TP01.MVC.Web.ViewModels.Shoe;
 using TP01.MVC.Web.ViewModels.Sport;
 using TP01EF2024.Entidades;
 using TP01EF2024.Servicios.Interfaces;
+using TP01EF2024.Servicios.Servicios;
 using X.PagedList.Extensions;
 
 namespace TP01.MVC.Web.Controllers
@@ -11,13 +14,15 @@ namespace TP01.MVC.Web.Controllers
     public class SportsController : Controller
     {
         private readonly ISportsService? _services;
+        private readonly IShoesService? _shoesServices;
 
         private readonly IMapper? _mapper;
 
-        public SportsController(ISportsService? services, IMapper mapper)
+        public SportsController(ISportsService? services, IMapper mapper, IShoesService? shoesServices)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _shoesServices = shoesServices;
         }
 
         public IActionResult Index(int? page)
@@ -25,6 +30,7 @@ namespace TP01.MVC.Web.Controllers
             int pageNum = page ?? 1;
             int pageSize = 8;
             var colours = _services.GetAll().ToPagedList(pageNum, pageSize);
+            ViewBag.CurrentPage = pageNum;
             return View(colours);
         }
 
@@ -128,6 +134,32 @@ namespace TP01.MVC.Web.Controllers
             _services.Eliminar(sport);
             TempData["success"] = "Registro eliminado correctamente";
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Details(int? id, int? page)
+        {
+            Sport sport = _services?.Get(filter: filter => filter.SportId == id)!;
+            if (sport is null)
+            {
+                return NotFound();
+            }
+            IEnumerable<Shoe> shoes;
+
+            shoes = _shoesServices?.GetAll(filter: s => s.SportId == id, propertiesNames: "Genre,Colour,Sport,Brand")!;
+            var shoesVm = _mapper?.Map<IEnumerable<ShoeViewModel>>(shoes).ToList();
+            ViewBag.CurrentSport = sport;
+            ViewBag.CurrentPage = page;
+            return View(shoesVm);
+        }
+
+        public IActionResult MoreDetails(int? shoeId, int? sportId)
+        {
+            Sport sport = _services?.Get(filter: filter => filter.SportId == sportId)!;
+            Shoe shoe = _shoesServices.Get(filter: s => s.ShoeId == shoeId, propertiesNames: "Brand,Sport,Genre,Colour");
+            var shoeVm = _mapper?.Map<ShoeViewModel>(shoe);
+            ViewBag.CurrentSport = sport;
+            return View(shoeVm);
+
         }
 
 
